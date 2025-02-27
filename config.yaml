@@ -1,0 +1,18 @@
+credentials:
+  usernames:
+    john_smith: # Replace 'john_smith' with the desired username
+      name: "John Smith" # Replace 'John Smith' with the full name
+      password: "$2b$12$SOME_BCRYPT_HASH" # Replace with the bcrypt hash of the password
+    raymond_holt: # Replace 'raymond_holt' with the desired username
+      name: "Raymond Holt" # Replace 'Raymond Holt' with the full name
+      password: "$2b$12$SOME_OTHER_BCRYPT_HASH" # Replace with the bcrypt hash of the password
+
+cookie:
+  name: my_cookie # Replace 'my_cookie' with the desired cookie name
+  key: "cookie_signature_key" # Replace with a secure key for signing the cookie (at least 32 characters)
+  expiry_days: 30
+
+preauthorised:
+  users:
+    - "john_smith" # Replace 'john_smith' with a pre-authorized username
+    - "raymond_holt" # Replace 'raymond_holt' with a pre-authorized username
