@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+from llama_index_core import VectorStoreIndex, SimpleDirectoryReader, QueryEngine
 
 def main():
     st.title("Agentic BGS PM")
@@ -19,6 +21,7 @@ def main():
                 if username == "demo" and password == "test":
                     st.session_state['logged_in'] = True
                     st.success("Logged in successfully!")
+                    st.rerun()  # Refresh the app to show logged-in content
                 else:
                     st.error("Invalid username or password")
 
@@ -29,18 +32,30 @@ def main():
 
         if logout_button:
             st.session_state['logged_in'] = False
+            st.rerun()  # Force a full rerun
 
-        # Add your main app content here (the LlamaIndex-powered conversation)
+        # --- LlamaIndex Integration ---
+        # 1. Load documents (replace with your data loading)
+        documents = SimpleDirectoryReader('./data').load_data()
+
+        # 2. Create index
+        index = VectorStoreIndex.from_documents(documents)
+
+        # 3. Create query engine
+        query_engine = index.as_query_engine()
+
+        # --- End LlamaIndex Integration ---
+
         st.write("Ask me questions about our product roadmap to help gain insights, and make decisions about timelines and strategies.")
 
         query = st.text_area("Enter your question:", height=100)
 
         if query:
             st.write(f"Question for the model: {query}")
-            # Replace this placeholder with your actual LlamaIndex query engine
-            # response = query_engine.query(query)
-            # st.write(response.response)
-            st.write("Response from the agent (replace with actual response)")
+            response = query_engine.query(query)  # Use the query engine
+            st.write(f"Response from the agent: {response.response}")
+        else:
+            st.write("Response from the agent (replace with actual response)") # Removed this line to prevent repeat.
 
 if __name__ == "__main__":
     main()
